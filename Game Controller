@@ -1,0 +1,38 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
+
+public class GameController : MonoBehaviour 
+{
+
+    public AudioSource Hit;
+    public AudioSource GameOver;
+
+    public GameObject[] lifes;
+
+    public GameObject Pot;
+
+    [SerializeField] private GameObject chooseDifficultyUI = null;
+    [SerializeField] private GameObject gameoverUI = null;
+    [SerializeField] private GameObject coinPrefab = null;
+    [SerializeField] private GameObject bombPrefab = null;
+
+    private float delta;
+    private bool started;
+    private float timer;
+    public int dropcoin;
+    
+    // Start is called before the first frame update
+    void Start()
+    {
+        Pot.SetActive(false);
+        Time.timeScale = 1;
+        dropcoin = 0;
+        started = false;
+        chooseDifficultyUI.SetActive(true);
+        Invoke("BombSpawner",5f);
+    }
