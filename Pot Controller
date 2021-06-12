@@ -1,0 +1,70 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class PotController : MonoBehaviour
+{
+    public GameController GC;
+    public AudioSource Coin;
+
+    public int speed;
+
+    [SerializeField] private Text coinsCollectedText = null;
+    private int coinsCollected;
+    [SerializeField] private Text HighscoreText = null;
+    private int Highscore;
+    private bool left, right;
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if(other.gameObject.tag == "Bomb")
+        {
+            GC.GameoverFunction();
+        }
+        else
+        {
+            Coin.Play();
+            Destroy(other.gameObject);
+            ++coinsCollected;
+            coinsCollectedText.text = coinsCollected.ToString();
+        }
+    }
+
+    private void Update()
+    {
+        if (left) 
+        {
+            transform.position -= new Vector3(speed * Time.deltaTime, 0, 0);
+        }
+
+        if (right) 
+        {
+            transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
+        }
+        
+        if(coinsCollected>PlayerPrefs.GetInt("highscore"))
+        {
+            PlayerPrefs.SetInt("highscore",coinsCollected);
+        }
+        HighscoreText.text =  PlayerPrefs.GetInt("highscore").ToString();
+    }
+
+    public void goLeftDown() {
+        left = true;
+    }
+
+    public void goLeftUp() {
+        left = false;
+    }
+    
+    public void goRightDown() {
+        right = true;
+    }
+
+    public void goRightUp() {
+        right = false;
+    }
+}
